@@ -1,0 +1,33 @@
+:root {
+  /* Colors */
+  --color-primary: #3b82f6;
+  --color-secondary: #2ab9cf;
+  --color-accent: #9333ea;
+  --color-background: #f8f9fa;
+  --color-text: #333333;
+  --color-text-light: #666666;
+  --color-border: #e0e0e0;
+}
+
+.c-primary {
+  color: var(--color-primary);
+}
+.c-secondary {
+  color: var(--color-secondary);
+}
+.c-accent {
+  color: var(--color-accent);
+}
+.c-background {
+  color: var(--color-background);
+}
+.c-text {
+  color: var(--color-text);
+}
+
+.c-main-gradient {
+  background-clip: text;
+  background-image: linear-gradient(to right, #3b83f6b9, #2ca1b3 20%, #33eaad);
+  -webkit-background-clip: text;
+  color: transparent;
+}

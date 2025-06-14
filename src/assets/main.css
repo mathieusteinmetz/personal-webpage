@@ -1,0 +1,67 @@
+@import './design/index.css';
+
+:root {
+  font-size: 1.25em;
+}
+
+@media (max-width: 768px) {
+  :root {
+    font-size: 1em;
+  }
+}
+
+html,
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  color: #ffffff;
+  min-height: 100vh;
+}
+
+body {
+  --background-gradient: linear-gradient(160deg, black, #1e293b);
+
+  background-image: var(--background-gradient);
+}
+#app {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
