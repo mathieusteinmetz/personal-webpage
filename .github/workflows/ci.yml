@@ -33,6 +33,17 @@ jobs:
     secrets: inherit
     with:
       is_prod: 'false'
+  comment_preview_url:
+    needs: deploy-preview
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add vercel output to PR
+        id: comment_vercel_to_pr
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          comment-tag: preview_url
+          message: |
+            :rocket: Preview URL for this PR: [${{ steps.deploy_preview.outputs.vercel_url }}](${{ steps.deploy_preview.outputs.vercel_url }})
   generate_lighthouse_audit:
     needs: deploy-preview
     runs-on: ubuntu-latest
