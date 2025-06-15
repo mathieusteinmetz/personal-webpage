@@ -30,6 +30,8 @@ jobs:
   Deploy-Preview:
     needs: test
     runs-on: ubuntu-latest
+    output:
+      vercel_url: ${{ steps.deploy_preview.outputs.vercel_url }}
     steps:
       - uses: actions/checkout@v3
       - name: Install Vercel CLI
@@ -60,7 +62,7 @@ jobs:
         uses: treosh/lighthouse-ci-action@v12
         with:
           urls: |
-            ${{ steps.deploy_preview.outputs.vercel_url }}
+            ${{ needs.Deploy-Preview.outputs.vercel_url }}
           uploadArtifacts: true
           temporaryPublicStorage: false
       - name: Format lighthouse score
