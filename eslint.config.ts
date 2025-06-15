@@ -1,23 +1,44 @@
 import { defineConfigWithVueTs, vueTsConfigs } from '@vue/eslint-config-typescript'
-
 import pluginVitest from '@vitest/eslint-plugin'
 
-// To allow more languages other than `ts` in `.vue` files, uncomment the following lines:
-// import { configureVueProject } from '@vue/eslint-config-typescript'
-// configureVueProject({ scriptLangs: ['ts', 'tsx'] })
-// More info at https://github.com/vuejs/eslint-config-typescript/#advanced-setup
-
-export default defineConfigWithVueTs(
+export default [
   {
-    name: 'app/files-to-lint',
-    files: ['**/*.{ts,mts,tsx,vue}'],
-    ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**'],
+    ignores: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/coverage/**',
+      '**/build/**',
+      '**/.vercel/**',
+      '**/dist-ssr/**',
+    ],
   },
 
-  vueTsConfigs.recommended,
-
-  {
-    ...pluginVitest.configs.recommended,
-    files: ['src/**/__tests__/*'],
-  },
-)
+  ...defineConfigWithVueTs(
+    {
+      name: 'main-app-config',
+      files: ['src/**/*.{ts,vue}'],
+      rules: {
+        semi: ['error', 'never'],
+        quotes: ['error', 'single'],
+        'no-console': 'error',
+        'vue/html-self-closing': [
+          'error',
+          {
+            html: {
+              void: 'always',
+              normal: 'never',
+              component: 'always',
+            },
+            svg: 'always',
+            math: 'always',
+          },
+        ],
+      },
+    },
+    vueTsConfigs.recommended,
+    {
+      ...pluginVitest.configs.recommended,
+      files: ['src/**/__tests__/*'],
+    },
+  ),
+]
