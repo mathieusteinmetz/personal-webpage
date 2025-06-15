@@ -13,10 +13,10 @@ jobs:
   checks-deploy:
     name: 🧪 Check and deploy
     runs-on: ubuntu-latest
+    secrets: inherit
     steps:
       - uses: ./.github/workflows/checks.yml
       - uses: ./.github/workflows/vercel-deploy.yml
-        secrets: inherit
         with:
           is_prod: 'false'
       - name: Add vercel output to PR
