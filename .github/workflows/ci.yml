@@ -30,7 +30,7 @@ jobs:
   Deploy-Preview:
     needs: test
     runs-on: ubuntu-latest
-    output:
+    outputs:
       vercel_url: ${{ steps.deploy_preview.outputs.vercel_url }}
     steps:
       - uses: actions/checkout@v3
