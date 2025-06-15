@@ -1,5 +1,6 @@
 name: Unit Tests Workflow
-
+on:
+  workflow_call:
 jobs:
   run-tests:
     name: 🧪 Tests unitaires
