@@ -7,6 +7,7 @@ on:
         description: 'Indicates if the deployment is for production'
         required: false
         default: 'false'
+        type: string
     outputs:
       vercel_url:
         description: 'The URL of the deployed preview on Vercel'
