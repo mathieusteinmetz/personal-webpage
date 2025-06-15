@@ -10,25 +10,10 @@ permissions:
   pull-requests: write
 
 jobs:
-  test:
-    name: 🧪 Tests unitaires
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run tests
-        run: npm run test:unit
+  tests:
+    uses: ./.github/workflows/unit-tests.yml
   deploy-preview:
-    needs: test
+    needs: tests
     uses: ./.github/workflows/vercel-deploy.yml
     secrets: inherit
     with:
@@ -43,7 +28,7 @@ jobs:
         with:
           comment-tag: preview_url
           message: |
-            :rocket: Preview URL for this PR: [${{ steps.deploy_preview.outputs.vercel_url }}](${{ steps.deploy_preview.outputs.vercel_url }})
+            :rocket: Preview URL for this PR: [${{ needs.deploy_preview.outputs.vercel_url }}](${{ needs.deploy_preview.outputs.vercel_url }})
   generate_lighthouse_audit:
     needs: deploy-preview
     runs-on: ubuntu-latest
