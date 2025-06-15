@@ -54,18 +54,17 @@ jobs:
           echo "SEO=$SEO" >> $GITHUB_OUTPUT
 
       - name: Post Lighthouse summary comment
-        if: github.event_name == 'pull_request'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh pr comment "$PR_URL" --body "
-🔍 **Lighthouse Audit Summary**
-- 🟢 Performance: ${{ steps.lhci_scores.outputs.PERF }}
-- 🟢 Accessibility: ${{ steps.lhci_scores.outputs.ACCESS }}
-- 🟢 Best Practices: ${{ steps.lhci_scores.outputs.BEST }}
-- 🟢 SEO: ${{ steps.lhci_scores.outputs.SEO }}
+          if: github.event_name == 'pull_request'
+          env:
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            PR_URL: ${{ github.event.pull_request.html_url }}
+            COMMENT_BODY: |
+              🔍 **Lighthouse Audit Summary**
+              - 🟢 Performance: ${{ steps.lhci_scores.outputs.PERF }}
+              - 🟢 Accessibility: ${{ steps.lhci_scores.outputs.ACCESS }}
+              - 🟢 Best Practices: ${{ steps.lhci_scores.outputs.BEST }}
+              - 🟢 SEO: ${{ steps.lhci_scores.outputs.SEO }}
 
-📄 [Voir le rapport complet dans les Artifacts](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
-"
-        env:
-          PR_URL: ${{ github.event.pull_request.html_url }}
+              📄 [Voir le rapport complet dans les Artifacts](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          run: |
+            gh pr comment "$PR_URL" --body "$COMMENT_BODY"
