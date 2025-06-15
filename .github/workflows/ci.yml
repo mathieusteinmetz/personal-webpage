@@ -29,7 +29,7 @@ jobs:
         run: npm run test:unit
   deploy-preview:
     needs: test
-    uses: ./.github/workflows/components/vercel-deploy.yml
+    uses: ./.github/workflows/vercel-deploy.yml
     with:
       is_prod: false
   generate_lighthouse_audit:
