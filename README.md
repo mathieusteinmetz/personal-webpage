@@ -1,45 +1,23 @@
-# .
+![Tests](https://github.com/mathieusteinmetz/personal-webpage/actions/workflows/prod-ci.yml/badge.svg)
 
-This template should help get you started developing with Vue 3 in Vite.
+# 💼 Mathieu Steinmetz – CV en ligne
 
-## Recommended IDE Setup
+Bienvenue sur mon CV interactif, hébergé en front-only sur [Vercel](https://mathieusteinmetz.com).  
+Ce site me permet de centraliser mes compétences, mon parcours professionnel ainsi que mes projets open-source GitHub.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+---
 
-## Type Support for `.vue` Imports in TS
+## 🚀 Fonctions principales
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+- [ ] **Présentation dynamique** de mon profil professionnel
+- [ ] **Section "Projets GitHub"** automatiquement alimentée à partir de mes dépôts publics taggés avec `cv`
+- [x] **CI/CD / Tests ...** intégrés dans la CI
 
-## Customize configuration
+---
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+## 🔧 Stack technique
 
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+- **Frontend** : [Vite](https://vitejs.dev/) + [Vue.js](https://vuejs.org/)
+- **Déploiement** : GitHub Actions w/ Vercel
+  - Pour combler les manques de l'app Vercel intégrée à Github
+- **CI/CD** : Lint / Prettier / Tests + coverage / Lighthouse
