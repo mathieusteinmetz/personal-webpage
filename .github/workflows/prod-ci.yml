@@ -30,6 +30,7 @@ jobs:
   deploy-preview:
     needs: test
     uses: ./.github/workflows/vercel-deploy.yml
+    secrets: inherit
     with:
       is_prod: 'true'
   generate_lighthouse_audit:
