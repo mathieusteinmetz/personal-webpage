@@ -89,11 +89,11 @@ jobs:
                 ' ',
                 `*Lighthouse ran on [${Object.keys(links)[0]}](${Object.keys(links)[0]})*`
             ].join('\n')
-             return comment;
+             return { comment };
       - name: Add comment to PR
         id: comment_to_pr
         uses: thollander/actions-comment-pull-request@v3
         with:
           comment-tag: lighthouse
           message: |
-            ${{ steps.format_lighthouse_score.outputs.result }}
+            ${{ steps.format_lighthouse_score.outputs.comment }}
