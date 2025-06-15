@@ -28,15 +28,44 @@ jobs:
   lighthouse:
     name: 🚦 Audit Lighthouse
     runs-on: ubuntu-latest
-    needs: test
     steps:
-      - name: Install Node
-        uses: actions/setup-node@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Lighthouse audit
+        uses: treosh/lighthouse-ci-action@v12
         with:
-          node-version: 20
+          urls: |
+            https://mathieusteinmetz.com
+          uploadArtifacts: true
+          temporaryPublicStorage: false
 
-      - name: Install Lighthouse CI
-        run: npm install -g @lhci/cli
+      - name: Extract Lighthouse scores
+        id: lhci_scores
+        run: |
+          REPORT_PATH=$(find .lighthouseci -name '*.report.json' | head -n 1)
+          PERF=$(jq '.categories.performance.score * 100 | floor' "$REPORT_PATH")
+          ACCESS=$(jq '.categories.accessibility.score * 100 | floor' "$REPORT_PATH")
+          BEST=$(jq '.categories["best-practices"].score * 100 | floor' "$REPORT_PATH")
+          SEO=$(jq '.categories.seo.score * 100 | floor' "$REPORT_PATH")
+          echo "PERF=$PERF" >> $GITHUB_OUTPUT
+          echo "ACCESS=$ACCESS" >> $GITHUB_OUTPUT
+          echo "BEST=$BEST" >> $GITHUB_OUTPUT
+          echo "SEO=$SEO" >> $GITHUB_OUTPUT
 
-      - name: Run Lighthouse CI on deployed site
-        run: lhci autorun --collect.url=https://mathieusteinmetz.vercel.app || echo "Ignore LHCI exit code"
+      - name: Post Lighthouse summary comment
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr comment "$PR_URL" --body "
+🔍 **Lighthouse Audit Summary**
+- 🟢 Performance: ${{ steps.lhci_scores.outputs.PERF }}
+- 🟢 Accessibility: ${{ steps.lhci_scores.outputs.ACCESS }}
+- 🟢 Best Practices: ${{ steps.lhci_scores.outputs.BEST }}
+- 🟢 SEO: ${{ steps.lhci_scores.outputs.SEO }}
+
+📄 [Voir le rapport complet dans les Artifacts](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
