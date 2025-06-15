@@ -69,11 +69,10 @@ jobs:
       - name: Format lighthouse score
         id: format_lighthouse_score
         uses: actions/github-script@v7
+        env:
+          RESULTS: ${{ steps.lighthouse_audit.outputs.manifest }}
+          LINKS: ${{ steps.lighthouse_audit.outputs.links }}
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          env:
-            RESULTS: ${{ steps.lighthouse_audit.outputs.manifest }}
-            LINKS: ${{ steps.lighthouse_audit.outputs.links }}
           script: |
             const result = process.env.RESULTS[0].summary
             const links = process.env.LINKS
