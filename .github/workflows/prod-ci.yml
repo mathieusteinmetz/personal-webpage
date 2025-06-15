@@ -31,7 +31,7 @@ jobs:
       - name: Run tests
         run: npm run test:unit
   deploy-prod:
-    needs: tests
+    needs: checks
     uses: ./.github/workflows/vercel-deploy.yml
     secrets: inherit
     with:
