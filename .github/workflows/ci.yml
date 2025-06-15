@@ -10,19 +10,15 @@ permissions:
   pull-requests: write
 
 jobs:
-  checks:
-    name: 🧪 Check all
-    uses: ./.github/workflows/checks.yml
-  deploy-preview:
-    needs: checks
-    uses: ./.github/workflows/vercel-deploy.yml
-    secrets: inherit
-    with:
-      is_prod: 'false'
-  comment_preview_url:
-    needs: deploy-preview
+  checks-deploy:
+    name: 🧪 Check and deploy
     runs-on: ubuntu-latest
     steps:
+      - uses: ./.github/workflows/checks.yml
+      - uses: ./.github/workflows/vercel-deploy.yml
+        secrets: inherit
+        with:
+          is_prod: 'false'
       - name: Add vercel output to PR
         id: comment_vercel_to_pr
         uses: thollander/actions-comment-pull-request@v3
