@@ -28,6 +28,7 @@ jobs:
       - name: Run tests
         run: npm run test:unit
   Deploy-Preview:
+    depends-on: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -38,4 +39,58 @@ jobs:
       - name: Build Project Artifacts
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
       - name: Deploy Project Artifacts to Vercel
-        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+        id: deploy_preview
+        run: |
+          url=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --confirm)
+          echo "Vercel URL: $url"
+          echo "vercel_url=$url" >> $GITHUB_OUTPUT
+      - name: Add vercel output to PR
+        id: comment_vercel_to_pr
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          message: |
+            :rocket: Preview URL for this PR: [${{ steps.deploy_preview.outputs.vercel_url }}](${{ steps.deploy_preview.outputs.vercel_url }})
+  generate_lighthouse_audit:
+    depends-on: Deploy-Preview
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Audit preview URL with Lighthouse
+        id: lighthouse_audit
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: |
+            ${{ steps.deploy_preview.outputs.vercel_url }}
+          uploadArtifacts: true
+          temporaryPublicStorage: false
+      - name: Format lighthouse score
+        id: format_lighthouse_score
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const result = ${{ steps.lighthouse_audit.outputs.manifest }}[0].summary
+            const links = ${{ steps.lighthouse_audit.outputs.links }}
+            const formatResult = (res) => Math.round((res * 100))
+            Object.keys(result).forEach(key => result[key] = formatResult(result[key]))
+            const score = res => res >= 90 ? '🟢' : res >= 50 ? '🟠' : '🔴'
+            const comment = [
+                `⚡️ [Lighthouse report](${Object.values(links)[0]}) for the changes in this PR:`,
+                '| Category | Score |',
+                '| --- | --- |',
+                `| ${score(result.performance)} Performance | ${result.performance} |`,
+                `| ${score(result.accessibility)} Accessibility | ${result.accessibility} |`,
+                `| ${score(result['best-practices'])} Best practices | ${result['best-practices']} |`,
+                `| ${score(result.seo)} SEO | ${result.seo} |`,
+                `| ${score(result.pwa)} PWA | ${result.pwa} |`,
+                ' ',
+                `*Lighthouse ran on [${Object.keys(links)[0]}](${Object.keys(links)[0]})*`
+            ].join('\n')
+             core.setOutput("comment", comment);
+      - name: Add comment to PR
+        id: comment_to_pr
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          comment-tag: lighthouse
+          message: |
+            ${{ steps.format_lighthouse_score.outputs.comment }}
