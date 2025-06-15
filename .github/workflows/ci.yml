@@ -69,15 +69,12 @@ jobs:
       - name: Format lighthouse score
         id: format_lighthouse_score
         uses: actions/github-script@v7
-        env:
-          RESULTS: ${{ steps.lighthouse_audit.outputs.manifest }}
-          LINKS: ${{ steps.lighthouse_audit.outputs.links }}
         with:
           script: |
-            console.log('Lighthouse results:', process.env.RESULTS)
-            console.log('Lighthouse links:', process.env.LINKS)
-            const result = process.env.RESULTS[0].summary
-            const links = process.env.LINKS
+            const manifest = JSON.parse(`${{ steps.lighthouse_audit.outputs.manifest }}`);
+            const links = JSON.parse(`${{ steps.lighthouse_audit.outputs.links }}`);
+
+            const result = manifest[0].summary;
             const formatResult = (res) => Math.round((res * 100))
             Object.keys(result).forEach(key => result[key] = formatResult(result[key]))
             const score = res => res >= 90 ? '🟢' : res >= 50 ? '🟠' : '🔴'
@@ -92,11 +89,11 @@ jobs:
                 ' ',
                 `*Lighthouse ran on [${Object.keys(links)[0]}](${Object.keys(links)[0]})*`
             ].join('\n')
-             core.setOutput("comment", comment);
+             return comment;
       - name: Add comment to PR
         id: comment_to_pr
         uses: thollander/actions-comment-pull-request@v3
         with:
           comment-tag: lighthouse
           message: |
-            ${{ steps.format_lighthouse_score.outputs.comment }}
+            ${{ steps.format_lighthouse_score.outputs.result }}
