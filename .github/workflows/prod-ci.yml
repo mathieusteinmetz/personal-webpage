@@ -31,7 +31,7 @@ jobs:
     needs: test
     uses: ./.github/workflows/vercel-deploy.yml
     with:
-      is_prod: true
+      is_prod: 'true'
   generate_lighthouse_audit:
     needs: deploy-preview
     runs-on: ubuntu-latest

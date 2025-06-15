@@ -7,7 +7,6 @@ on:
         description: 'Indicates if the deployment is for production'
         required: false
         default: 'false'
-        type: boolean
     outputs:
       vercel_url:
         description: 'The URL of the deployed preview on Vercel'
@@ -30,7 +29,7 @@ jobs:
         id: deploy_preview
         run: |
 
-          if [ "${{ inputs.is_prod }}" = "true" ]; then
+          if [ ${{ inputs.is_prod == 'true' }} ]; then
             echo "Deploying to production environment"
             vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }} --confirm
             url=$(vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }} --confirm)
