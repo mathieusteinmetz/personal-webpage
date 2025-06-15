@@ -8,6 +8,7 @@
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "test:unit": "vitest",
+    "test:ui": "vitest --ui",
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
     "lint": "npx eslint . --fix",
@@ -33,7 +34,9 @@
     "@typescript-eslint/eslint-plugin": "^8.34.0",
     "@typescript-eslint/parser": "^8.34.0",
     "@vitejs/plugin-vue": "^5.2.3",
+    "@vitest/coverage-istanbul": "^3.2.3",
     "@vitest/eslint-plugin": "^1.1.39",
+    "@vitest/ui": "^3.2.3",
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.5.0",
     "@vue/test-utils": "^2.4.6",
@@ -48,6 +51,7 @@
     "vite": "^6.2.4",
     "vite-plugin-vue-devtools": "^7.7.2",
     "vitest": "^3.2.3",
+    "vitest-canvas-mock": "^0.3.3",
     "vue-eslint-parser": "^10.1.3",
     "vue-tsc": "^2.2.8"
   }
