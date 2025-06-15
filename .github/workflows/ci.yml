@@ -53,12 +53,10 @@ jobs:
           echo "BEST=$BEST" >> $GITHUB_OUTPUT
           echo "SEO=$SEO" >> $GITHUB_OUTPUT
 
-      - name: Post Lighthouse summary comment
-        if: github.event_name == 'pull_request'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_URL: ${{ github.event.pull_request.html_url }}
-          COMMENT_BODY: |
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          message: |
             🔍 **Lighthouse Audit Summary**
             - 🟢 Performance: ${{ steps.lhci_scores.outputs.PERF }}
             - 🟢 Accessibility: ${{ steps.lhci_scores.outputs.ACCESS }}
@@ -66,5 +64,4 @@ jobs:
             - 🟢 SEO: ${{ steps.lhci_scores.outputs.SEO }}
 
             📄 [Voir le rapport complet dans les Artifacts](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
-        run: |
-          gh pr comment "$PR_URL" --body "$COMMENT_BODY"
+          comment-tag: 'lighthouse'
