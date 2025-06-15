@@ -11,7 +11,7 @@ on:
     outputs:
       vercel_url:
         description: 'The URL of the deployed preview on Vercel'
-        value: ${{ steps.deploy_preview.outputs.vercel_url }}
+        value: ${{ jobs.deploy.outputs.vercel_url }}
 
 jobs:
   deploy:
