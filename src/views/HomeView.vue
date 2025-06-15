@@ -14,19 +14,16 @@ const animate = {
   opacity: 1,
   y: 0,
 }
-
 </script>
 
 <template>
   <header>
-     <motion.div :initial="initial" :animate="animate" :transition="getDelay()" >
-      <img src="@/assets/logo.png" alt="Logo" class="logo text-sm"> </img>
+    <motion.div :initial="initial" :animate="animate" :transition="getDelay()">
+      <img src="@/assets/logo.png" alt="Logo" class="logo text-sm" />
     </motion.div>
     <motion.div :initial="initial" :animate="animate" :transition="getDelay()" class="title">
       <h1 class="text-3xl c-main-gradient">Mathieu Steinmetz</h1>
     </motion.div>
-
-
 
     <motion.section :initial="initial" :animate="animate" :transition="getDelay()">
       <h2 class="text-1xl text-light c-secondary">FullStack Web Developer</h2>
@@ -40,9 +37,7 @@ const animate = {
     >
       <MCard>
         <template #prepend>
-          <span class="material-symbols-outlined">
-            language
-          </span>
+          <span class="material-symbols-outlined"> language </span>
         </template>
         <div class="text-md">Rennes, France</div>
       </MCard>
@@ -59,7 +54,6 @@ const animate = {
     <motion.div :initial="initial" :animate="animate" :transition="getDelay()">
       <ExternalLinks />
     </motion.div>
-
   </header>
 </template>
 
@@ -69,7 +63,6 @@ const animate = {
   align-items: center;
   justify-content: center;
   line-height: 1.2;
-
 }
 .logo {
   height: var(--text-5xl);

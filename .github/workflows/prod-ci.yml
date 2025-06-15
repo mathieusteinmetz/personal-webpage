@@ -7,8 +7,9 @@ on:
     branches: [main]
 
 jobs:
-  tests:
-    uses: ./.github/workflows/unit-tests.yml
+  checks:
+    name: 🧪 Check all
+    uses: ./.github/workflows/checks.yml
   deploy-prod:
     needs: tests
     uses: ./.github/workflows/vercel-deploy.yml
