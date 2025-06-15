@@ -49,7 +49,7 @@ jobs:
         with:
           comment-tag: preview_url
           message: |
-            :rocket: Preview URL for this PR: [${{ needs.deploy_preview.outputs.vercel_url }}](${{ needs.deploy_preview.outputs.vercel_url }})
+            :rocket: Preview URL for this PR: [${{ needs.deploy-preview.outputs.vercel_url }}](${{ needs.deploy-preview.outputs.vercel_url }})
   generate_lighthouse_audit:
     needs: deploy-preview
     runs-on: ubuntu-latest
