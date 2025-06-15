@@ -27,34 +27,13 @@ jobs:
 
       - name: Run tests
         run: npm run test:unit
-  Deploy-Preview:
+  deploy-preview:
     needs: test
-    runs-on: ubuntu-latest
-    outputs:
-      vercel_url: ${{ steps.deploy_preview.outputs.vercel_url }}
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install Vercel CLI
-        run: npm install --global vercel@canary
-      - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
-      - name: Build Project Artifacts
-        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
-      - name: Deploy Project Artifacts to Vercel
-        id: deploy_preview
-        run: |
-          url=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --confirm)
-          echo "Vercel URL: $url"
-          echo "vercel_url=$url" >> $GITHUB_OUTPUT
-      - name: Add vercel output to PR
-        id: comment_vercel_to_pr
-        uses: thollander/actions-comment-pull-request@v3
-        with:
-          comment-tag: preview_url
-          message: |
-            :rocket: Preview URL for this PR: [${{ steps.deploy_preview.outputs.vercel_url }}](${{ steps.deploy_preview.outputs.vercel_url }})
+    uses: ./.github/workflows/components/vercel-deploy.yml
+    with:
+      is_prod: false
   generate_lighthouse_audit:
-    needs: Deploy-Preview
+    needs: deploy-preview
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -63,7 +42,7 @@ jobs:
         uses: treosh/lighthouse-ci-action@v12
         with:
           urls: |
-            ${{ needs.Deploy-Preview.outputs.vercel_url }}
+            ${{ needs.deploy-preview.outputs.vercel_url }}
           uploadArtifacts: true
           temporaryPublicStorage: true
       - name: Format lighthouse score
