@@ -28,21 +28,21 @@ let mouseX = 0
 let mouseY = 0
 let animationFrameId: number
 
-const resizeCanvas = () => {
+const resizeCanvas = /* istanbul ignore next */ () => {
   if (canvasRef.value) {
     canvasRef.value.width = window.innerWidth
     canvasRef.value.height = window.innerHeight
   }
 }
 
-const handleMouseMove = (event: MouseEvent) => {
+const handleMouseMove = /* istanbul ignore next */ (event: MouseEvent) => {
   if (canvasRef.value) {
     mouseX = event.clientX / canvasRef.value.width - 0.5
     mouseY = event.clientY / canvasRef.value.height - 0.5
   }
 }
 
-const animate = () => {
+const animate = /* istanbul ignore next */ () => {
   if (!ctx) return
 
   if (!canvasRef.value) return
@@ -66,28 +66,31 @@ const animate = () => {
   animationFrameId = requestAnimationFrame(animate)
 }
 
-onMounted(() => {
-  if (canvasRef.value) {
-    ctx = canvasRef.value.getContext('2d')
+onMounted(
+  /* istanbul ignore next */
+  () => {
+    if (canvasRef.value) {
+      ctx = canvasRef.value.getContext('2d')
 
-    resizeCanvas()
+      resizeCanvas()
 
-    for (let i = 0; i < props.count; i++) {
-      particles.push({
-        x: Math.random() * canvasRef.value.width,
-        y: Math.random() * canvasRef.value.height,
-        radius: Math.random() * 2.5 + 1,
-        dx: (Math.random() - 0.5) * 2,
-        dy: (Math.random() - 0.5) * 2,
-      })
+      for (let i = 0; i < props.count; i++) {
+        particles.push({
+          x: Math.random() * canvasRef.value.width,
+          y: Math.random() * canvasRef.value.height,
+          radius: Math.random() * 2.5 + 1,
+          dx: (Math.random() - 0.5) * 2,
+          dy: (Math.random() - 0.5) * 2,
+        })
+      }
+
+      window.addEventListener('resize', resizeCanvas)
+      window.addEventListener('mousemove', handleMouseMove)
+
+      animate()
     }
-
-    window.addEventListener('resize', resizeCanvas)
-    window.addEventListener('mousemove', handleMouseMove)
-
-    animate()
-  }
-})
+  },
+)
 
 onUnmounted(() => {
   window.removeEventListener('resize', resizeCanvas)

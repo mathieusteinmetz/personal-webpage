@@ -10,3 +10,7 @@ export const getDelay = () => {
     duration: 0.5,
   }
 }
+
+export const resetDelay = () => {
+  currentDelayIndex = 0
+}
