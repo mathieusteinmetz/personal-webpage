@@ -71,9 +71,12 @@ jobs:
         uses: actions/github-script@v7
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
+          env:
+            RESULTS: ${{ steps.lighthouse_audit.outputs.manifest }}
+            LINKS: ${{ steps.lighthouse_audit.outputs.links }}
           script: |
-            const result = ${{ steps.lighthouse_audit.outputs.manifest }}[0].summary
-            const links = ${{ steps.lighthouse_audit.outputs.links }}
+            const result = process.env.RESULTS[0].summary
+            const links = process.env.LINKS
             const formatResult = (res) => Math.round((res * 100))
             Object.keys(result).forEach(key => result[key] = formatResult(result[key]))
             const score = res => res >= 90 ? '🟢' : res >= 50 ? '🟠' : '🔴'
