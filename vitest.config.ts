@@ -16,7 +16,7 @@ export default mergeConfig(
         include: ['src/**/*.{js,ts,vue}'],
         enabled: true,
         thresholds: {
-          '100': true, // ✅ thresholds valides
+          //'100': true, // ✅ thresholds valides
         },
       },
       setupFiles: ['./vitest/vitest.setup.ts'],

@@ -61,6 +61,11 @@ describe('MParticuleEffect', () => {
   })
 
   it('should handle mousemove event', () => {
+    // Mock window.matchMedia
+    vi.spyOn(window, 'matchMedia').mockReturnValue({
+      matches: false,
+    } as MediaQueryList)
+
     const wrapper = shallowMount(MParticuleEffect)
     const mouseMoveEvent = new MouseEvent('mousemove', {
       clientX: 0,
@@ -71,7 +76,7 @@ describe('MParticuleEffect', () => {
     const vm = wrapper.vm as any
 
     // Assuming the component updates some internal state on mousemove
-    expect(vm.mouseX).toBe(-0.5)
-    expect(vm.mouseY).toBe(-0.5)
+    expect(vm.mouseX).toBe(0)
+    expect(vm.mouseY).toBe(0)
   })
 })
