@@ -36,6 +36,10 @@ const resizeCanvas = /* istanbul ignore next */ () => {
 }
 
 const handleMouseMove = /* istanbul ignore next */ (event: MouseEvent) => {
+  const isFinePointer = window.matchMedia('(pointer: fine)').matches
+  if (!isFinePointer) return
+  // only update mouse position if the pointer is fine (e.g., not a touch device)
+
   if (canvasRef.value) {
     mouseX = event.clientX / canvasRef.value.width - 0.5
     mouseY = event.clientY / canvasRef.value.height - 0.5
