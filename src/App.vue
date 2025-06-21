@@ -18,8 +18,14 @@ import MParticuleEffect from './components/MParticuleEffect.vue'
 .page-container {
   display: flex;
   flex-direction: column;
-  max-width: 64rem;
+  max-width: 80%;
   padding: 1.5rem;
   z-index: 1;
+}
+
+@media screen and (max-width: 768px) {
+  .page-container {
+    max-width: 100%;
+  }
 }
 </style>
